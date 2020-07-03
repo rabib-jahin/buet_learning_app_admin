@@ -1,0 +1,17 @@
+h1{
+
+text-align: center;
+color:red;
+
+}
+.admin{
+	background-color: gray;
+	height:70px;
+	display:flex;
+}
+#anchor{
+
+padding: 0px 900px;
+color:red;
+
+}

@@ -1,0 +1,21 @@
+
+.showText{
+
+cursor :pointer;
+
+}
+#error{
+
+	color:red;
+}
+#admin{
+
+
+	margin :0 auto;
+
+}
+form{
+
+	padding:20px;
+	margin-top: 60px;
+}

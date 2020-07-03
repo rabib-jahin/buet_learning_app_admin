@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+import React,{Component,useState} from 'react';
 import './App.css';
+import {BrowserRouter as Router,Link,Switch,Route} from "react-router-dom"
+import firebase from "./firebase"
+import Navbar from "./Components/Navbar"
+import Login from "./Components/Login"
+import Dashboard from "./Components/dashboard"
+import Problem from './Components/Problem'
+class App extends Component {
+constructor(props){
+super(props);
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
 }
 
-export default App;
+render(){
+return <Router><div>
+<Navbar/>
+
+
+</div>
+<Switch>
+<Route path='/' exact component={Login}/>
+<Route path='/dashboard' component={Dashboard}/>
+<Route path='/problem/:id' component={Problem}/>
+</Switch>
+</Router>
+}
+}
+  export default App;

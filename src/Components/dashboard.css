@@ -1,0 +1,50 @@
+.main{
+
+	display:flex;
+	flex-direction: column;
+}
+#logout{
+
+position:absolute;
+right:0;
+font-color:blue;
+font-size: 20px;
+}
+#logout:hover{
+font-color:orange;
+font-style: italic;
+cursor: pointer;
+
+}
+.para{
+display:flex;
+justify-content: center;
+margin-top:30px;
+font-size: 40px
+
+}
+.probs{
+margin:0 auto;
+
+border-style: solid;
+height:160px;
+border-width: 2px;
+border-color: black;
+margin-top: 30px;
+background-color: black;
+color:whitesmoke;
+padding-left:40px;
+width:370px;
+border-radius: 10px;
+cursor:pointer;
+
+box-shadow: 3px 3px 5px 5px grey;
+padding-top:22px;
+
+}
+.probs:hover{
+
+background-color: grey;
+border-radius: 50px;
+
+}
