@@ -2,6 +2,16 @@ import React,{Component,useState} from 'react';
 import "./Problem.css"
 import {BrowserRouter as Router,Link,Switch,Route,Redirect} from "react-router-dom"
 import firebase from "../firebase"
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 class Problem extends Component {
 
 constructor(props){
@@ -23,7 +33,8 @@ this.state={
 	difficulty:"",
 	answer:"",
 	ans_type:"",
-	author:""
+	author:"",
+	keywords:""
 }
 this.change=this.change.bind(this)
 this.click=this.click.bind(this)
@@ -97,7 +108,8 @@ firebase.firestore().collection('problem').doc(this.props.match.params.id)
   difficulty:this.state.difficulty,
   answer:this.state.answer,
   ans_type:this.state.ans_type,
-  author:this.state.author
+  author:this.state.author,
+  keywords:this.state.keywords
 
 
 }
@@ -141,7 +153,8 @@ this.setState({
 	difficulty:doc.data().difficulty,
 	answer:doc.data().answer,
 	ans_type:doc.data().ans_type,
-	author:doc.data().author
+	author:doc.data().author,
+	keywords:doc.data().keywords
 
 
 })
@@ -178,29 +191,23 @@ return (
 <h1>General Information</h1>
 <h3>Title</h3>
 <input onChange={this.change} value={this.state.title} name="title" />
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
 
 <h3>Series</h3>
 
 <input value={this.state.series} name="series" onChange={this.change}/>
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
 <h3>Category</h3>
 
 <input onChange={this.change} value={this.state.category} name="category" />
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
 <h3>Difficulty</h3>
 
 <input onChange={this.change} value={this.state.difficulty} name="difficulty" />
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
 <h3>Keywords</h3>
 
-<input value={prob.keywords} />
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
+<input name="keywords" value={this.state.keywords} onChange={this.change}/>
 <h1>Problem Info</h1>
 <h3>Description</h3>
 
 <textarea name="description" value={this.state.description} onChange={this.change}></textarea>
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
 <h3>Description Images</h3>
 {
 	this.files&&this.files.map(img=>{
@@ -215,7 +222,6 @@ return <img src={img}/>
 <h3>Problem Statement</h3>
 
 <textarea name="statement" value={this.state.statement} onChange={this.change}/>
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
 
 
 
@@ -224,42 +230,42 @@ return <img src={img}/>
 <h3>Answer-type</h3>
 
 <input value={this.state.ans_type} onChange={this.change} name="ans_type"/>
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
 
 <h3>Options</h3>
+<FormControl component="fieldset">
+   <FormLabel component="legend"></FormLabel>
 {
 
 prob.options&& prob.options.map((option,i)=>{
 return(
 	<div>
 	
-<ul>
-<li>{option}</li>
-</ul>
+
+
+        <FormControlLabel value="option" control={<Radio />} label={option} selected/>
+        
+ 
+
 
 </div>
 
 )
 })	
 }
-<button className="btn pink lighten-1 z-depth-0" >Edit</button>
+   </FormControl>
 <h3>Answer</h3>
 
 <input value={this.state.answer} onChange={this.change} name="answer" />
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
 <h3>Author</h3>
 
 <input value={this.state.author} onChange={this.change} name="author" />
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
 <h3>Restrictions</h3>
 
-<textarea name="restrictions" value={this.state.restrictions} onClick={this.change} />
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
+<textarea name="restrictions" value={this.state.restrictions} onChange={this.change} />
 <h1>Solution Info</h1>
 <h3>Explanation</h3>
 
-<input name="explanation" value={this.state.explanation} onChange={this.change}/>
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
+<textarea name="explanation" value={this.state.explanation} onChange={this.change}/>
 
 
 <h3>Solution-Image</h3>
@@ -268,10 +274,10 @@ return(
 return <img src={img}/>
 })
 }
-<button onClick={this.click} className="btn pink lighten-1 z-depth-0" >Edit</button>
 
 </div>
-
+<button onClick={this.click} className="bt-green" >Update</button>
+<br/>
 <button onClick={this.review} className="bt-green" >{this.state.isReviewed?'Reviewed':'Review'}</button>
 
 {
@@ -282,10 +288,61 @@ this.state.isReviewed?
 
 <br/><br/>
 <button className="bt-del" onClick={this.delete}>Delete</button>
+
 </div>
 
 
-:null}
+:(
+
+
+    <div class="preloader-wrapper big active" id="loader">
+      <div class="spinner-layer spinner-blue">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-red">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-yellow">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-green">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+
+
+
+	)
+
+
+}
 
 
 </div>

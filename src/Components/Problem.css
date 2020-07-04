@@ -72,6 +72,11 @@ margin-left: 10px;
 	color:red;
 	margin-left: 10px;
 }
+#loader{
+
+	position: absolute;
+	right:50%;
+}
 button{
 
 	width: 70px;

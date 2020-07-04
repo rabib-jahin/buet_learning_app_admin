@@ -6,6 +6,7 @@ import Navbar from "./Components/Navbar"
 import Login from "./Components/Login"
 import Dashboard from "./Components/dashboard"
 import Problem from './Components/Problem'
+import Reviewed from './Components/Reviewed'
 class App extends Component {
 constructor(props){
 super(props);
@@ -24,6 +25,7 @@ return <Router><div>
 <Route path='/' exact component={Login}/>
 <Route path='/dashboard' component={Dashboard}/>
 <Route path='/problem/:id' component={Problem}/>
+<Route path='/reviewed' component={Reviewed}/>
 </Switch>
 </Router>
 }

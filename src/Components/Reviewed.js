@@ -1,53 +1,22 @@
-import React,{Component} from "react"
+import React,{Component} from 'react'
 import firebase from "../firebase"
 import {Redirect ,Link} from "react-router-dom"
 import "./dashboard.css"
-import Login from "./Login"
-
-class Dashboard extends Component{
-constructor(props){
+class Reviewed extends Component{
+ constructor(props){
 
 super(props)
 
 this.state={
 
 	isLoggedIn:true,
+	checked:false,
 	probs:[],
-	gotProb:false,
-	id:"",
-	checked:false
+	gotprob:false
+
 
 }
-this.logout=this.logout.bind(this)
 this.getProb=this.getProb.bind(this)
-}
-
-
-
-
-
-
-
-logout(){
-	
-firebase.auth().signOut()
-.then(()=>{
-
-this.setState({
-
-	isLoggedIn:false
-})
-}) 
-}
-getProb(e){
-console.log(e)
-this.setState({
-
-	gotProb:true,
-	id:e
-
-})
-
 }
 componentDidMount(){
 firebase.auth().onAuthStateChanged(user=>{
@@ -68,14 +37,16 @@ else{
 }
 
 })
-	this.componentMount()
+
+this.componentMount();
 }
- componentMount=()=>{
+
+componentMount=()=>{
  	console.log(firebase.auth().currentUser)
 
 
 let prob=[]
-firebase.firestore().collection('problem')
+firebase.firestore().collection('problem').where('isReviewed','==',true)
 .onSnapshot(snap=>{
 snap.docChanges().forEach(change=>{
 if(change.type==='added') 
@@ -98,28 +69,33 @@ this.setState({
 
 
 }
+getProb(e){
+console.log(e)
+this.setState({
 
+	gotProb:true,
+	id:e
 
-render(){
-console.log(this.state.gotProb)
+})
+
+}
+ render(){
 const data=this.state.checked?(<div><a id="logout" onClick={this.logout}><u>Log out</u></a>
-<br/><a ><u><Link to="/reviewed">See Reviewed Problems</Link></u></a>
-<div className="para">
-<p>Problem List</p></div></div>):null
+<a  className="dashboard"><Link to="/dashboard">Back to Problemlist</Link></a>
 
-	if(!this.state.isLoggedIn){
+<div className="para">
+<p>Reviewed Problems</p></div>
+</div>
+):null
+if(!this.state.isLoggedIn){
 return <Redirect to="/"/>
 	}
-	
-	if(this.state.gotProb) {return  <Redirect to={'/problem/'+this.state.id} />
-}
-if(!this.state.probs){
 
-	return <p>helo</p>
-}
-return <div className="main">
+if(this.state.gotProb) {return  <Redirect to={'/problem/'+this.state.id} />
+}	
+return(
+<div className="main">
 {data}
-
 {
 
 
@@ -149,8 +125,10 @@ var time=new	Date(prob.timestamp).toLocaleTimeString('en-US')
 
 </div>
 
-}
-}
+	)
+
+ }
 
 
-export default Dashboard
+}
+export default Reviewed;
