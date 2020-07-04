@@ -11,6 +11,7 @@ this.state={
 	show:false,
 	isLoggedIn:false,
 	error:"",
+	checked:false
 
 }
 
@@ -28,16 +29,26 @@ this.setState({
 }
 componentDidMount(){
 console.log(firebase.auth().currentUser)
-if(firebase.auth().currentUser){
+firebase.auth().onAuthStateChanged(user=>{
+if(user){
+
 	this.setState({
-		isLoggedIn:true
+
+		isLoggedIn:true,
+		checked:true
+	
 	})
 }
 else{
+
 	this.setState({
-		isLoggedIn:false
+		isLoggedIn:false,
+		checked:true
+	
 	})
 }
+
+})
 
 
 
@@ -90,7 +101,7 @@ let e=""
 if(this.state.isLoggedIn) return (<Redirect to="/dashboard"/>)
 
 if(this.state.error!=='') e= <p id="error">Log in error!!{this.state.error}</p>
-
+if(!this.state.checked) return null
 	return <div>
 <h1 id="admin">Admin Login</h1>
 

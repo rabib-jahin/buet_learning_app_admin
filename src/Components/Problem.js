@@ -94,25 +94,27 @@ this.setState({
 })
 }
 click(){
-
+ 
 firebase.firestore().collection('problem').doc(this.props.match.params.id)
 .update({
 
-  title:this.state.title,
-  series:this.state.series,
-  description:this.state.description,
-  statement:this.state.statement,
-  explanation:this.state.explanation,
-  restrictions:this.state.restrictions,
-  category:this.state.category,
-  difficulty:this.state.difficulty,
-  answer:this.state.answer,
-  ans_type:this.state.ans_type,
-  author:this.state.author,
-  keywords:this.state.keywords
+  title:this.state.title?this.state.title:firebase.firestore.FieldValue.delete(),
+  series:this.state.series?this.state.series:firebase.firestore.FieldValue.delete(),
+  description:this.state.description?this.state.description:firebase.firestore.FieldValue.delete(),
+  statement:this.state.statement?this.state.statement:firebase.firestore.FieldValue.delete(),
+  explanation:this.state.explanation?this.state.explanation:firebase.firestore.FieldValue.delete(),
+  restrictions:this.state.restrictions?this.state.restrictions:firebase.firestore.FieldValue.delete(),
+  category:this.state.category?this.state.category:firebase.firestore.FieldValue.delete(),
+  difficulty:this.state.difficulty?this.state.difficulty:firebase.firestore.FieldValue.delete(),
+  answer:this.state.answer?this.state.answer:firebase.firestore.FieldValue.delete(),
+  ans_type:this.state.ans_type?this.state.ans_type:firebase.firestore.FieldValue.delete(),
+  author:this.state.author?this.state.author:firebase.firestore.FieldValue.delete(),
+  keywords:this.state.keywords?this.state.keywords:firebase.firestore.FieldValue.delete()
 
 
-}
+
+},
+
 
 ).then(()=>alert('update successful'))
 .catch(e=>{alert('error occured')})
@@ -170,7 +172,10 @@ if(doc.data().isReviewed){
 	})
 }
 })
-.catch(e=>{alert('error parsing data')})
+.catch(e=>{alert('error parsing data.Problem might be deleted')
+
+
+})
 
 }
  render() {
