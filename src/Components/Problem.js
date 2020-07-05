@@ -34,17 +34,64 @@ this.state={
 	answer:"",
 	ans_type:"",
 	author:"",
-	keywords:""
+	keywords:"",
+	img:"",
+	sol_img:""
 }
 this.change=this.change.bind(this)
 this.click=this.click.bind(this)
 this.review=this.review.bind(this)
 this.disapprove=this.disapprove.bind(this)
 this.delete=this.delete.bind(this)
+this.fileupload=this.fileupload.bind(this)
+this.deleteimg=this.deleteimg.bind(this)
 let files=[]
 }
-fileupload(e){
+fileupload(e,type){
 
+if(type==='des'){
+this.setState({
+
+		img:[...this.state.img,URL.createObjectURL(e.target.files[0])]
+	})	}
+
+else if(type==='ans'){
+this.setState({
+
+		sol_img:[...this.state.sol_img,URL.createObjectURL(e.target.files[0])]
+	})
+
+}
+
+
+
+	
+
+
+
+}
+deleteimg(i,type){
+
+let images=[]
+if(type==='des'){
+	images=this.state.img;
+	images.splice(i,1);
+	this.setState({
+
+		img:images
+	})
+
+}
+else{
+images=this.state.sol_img;
+	images.splice(i,1);
+	this.setState({
+
+		sol_img:images
+	})
+
+
+}
 
 }
 delete(){
@@ -109,8 +156,10 @@ firebase.firestore().collection('problem').doc(this.props.match.params.id)
   answer:this.state.answer?this.state.answer:firebase.firestore.FieldValue.delete(),
   ans_type:this.state.ans_type?this.state.ans_type:firebase.firestore.FieldValue.delete(),
   author:this.state.author?this.state.author:firebase.firestore.FieldValue.delete(),
-  keywords:this.state.keywords?this.state.keywords:firebase.firestore.FieldValue.delete()
+  keywords:this.state.keywords?this.state.keywords:firebase.firestore.FieldValue.delete(),
 
+  des_images:this.state.img?this.state.img:firebase.firestore.FieldValue.delete(),
+  ans_images:this.state.sol_img?this.state.sol_img:firebase.firestore.FieldValue.delete()
 
 
 },
@@ -119,6 +168,9 @@ firebase.firestore().collection('problem').doc(this.props.match.params.id)
 ).then(()=>alert('update successful'))
 .catch(e=>{alert('error occured')})
 }
+
+
+
 componentDidMount=()=>{
 firebase.auth().onAuthStateChanged(user=>{
 if(user){
@@ -156,7 +208,9 @@ this.setState({
 	answer:doc.data().answer,
 	ans_type:doc.data().ans_type,
 	author:doc.data().author,
-	keywords:doc.data().keywords
+	keywords:doc.data().keywords,
+	img:doc.data().des_images,
+	sol_img:doc.data().ans_images
 
 
 })
@@ -214,12 +268,17 @@ return (
 
 <textarea name="description" value={this.state.description} onChange={this.change}></textarea>
 <h3>Description Images</h3>
+<div className="img-body">
 {
-	this.files&&this.files.map(img=>{
-return <img src={img}/>
+	this.state.img&&this.state.img.map((img,index)=>{
+return (<div ><img src={img}/>
+	<button className="bt-del" onClick={(e)=>this.deleteimg(index,'des')}>Delete</button>
+</div>
+	)
 })
 }
-<input type="file" onChange={this.fileupload}/>
+</div>
+<input type="file" onChange={e=>this.fileupload(e,'des')}/>
 
 
 
@@ -274,11 +333,16 @@ return(
 
 
 <h3>Solution-Image</h3>
+<div className="img-body">
 {
-	prob.ans_images&&prob.ans_images.map(img=>{
-return <img src={img}/>
+	this.state.sol_img&&this.state.sol_img.map((img,index)=>{
+return <div><img src={img}/>
+<button className="bt-del" onClick={e=>this.deleteimg(index,'ans')}>Delete</button>
+</div>
 })
 }
+</div>
+<input type="file" onChange={e=>this.fileupload(e,'ans')}/>
 
 </div>
 <button onClick={this.click} className="bt-green" >Update</button>

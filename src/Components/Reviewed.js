@@ -17,6 +17,7 @@ this.state={
 
 }
 this.getProb=this.getProb.bind(this)
+this.logout=this.logout.bind(this)
 }
 componentDidMount(){
 firebase.auth().onAuthStateChanged(user=>{
@@ -40,7 +41,17 @@ else{
 
 this.componentMount();
 }
+logout(){
+	
+firebase.auth().signOut()
+.then(()=>{
 
+this.setState({
+
+	isLoggedIn:false
+})
+}) 
+}
 componentMount=()=>{
  	console.log(firebase.auth().currentUser)
 

@@ -113,10 +113,7 @@ return <Redirect to="/"/>
 	
 	if(this.state.gotProb) {return  <Redirect to={'/problem/'+this.state.id} />
 }
-if(!this.state.probs){
 
-	return <p>helo</p>
-}
 return <div className="main">
 {data}
 
@@ -135,6 +132,9 @@ var time=new	Date(prob.timestamp).toLocaleTimeString('en-US')
 
 <li>posted by {prob.author}</li>
 <li>created :{date} {time}</li>
+<li id="status">status : {prob.isReviewed?'Reviewed':'Not Reviewed'}</li>
+
+
 </ul>
 
 </div>
