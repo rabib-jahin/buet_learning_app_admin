@@ -7,6 +7,7 @@ import Login from "./Components/Login"
 import Dashboard from "./Components/dashboard"
 import Problem from './Components/Problem'
 import Reviewed from './Components/Reviewed'
+import Contributors from "./Components/contributors"
 class App extends Component {
 constructor(props){
 super(props);
@@ -26,6 +27,7 @@ return <Router><div>
 <Route path='/dashboard' component={Dashboard}/>
 <Route path='/problem/:id' component={Problem}/>
 <Route path='/reviewed' component={Reviewed}/>
+<Route path="/contributors" component={Contributors}/>
 </Switch>
 </Router>
 }

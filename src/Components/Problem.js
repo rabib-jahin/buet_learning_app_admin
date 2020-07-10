@@ -190,6 +190,7 @@ else{
 }
 
 })
+console.log("firebase reading");
 firebase.firestore().collection('problem').doc(this.props.match.params.id).get()
 .then(doc=>{
 	
@@ -237,7 +238,7 @@ if(doc.data().isReviewed){
  	
 this.files=this.state.probDetails.des_images
  
- 	console.log(this.state.probDetails)
+ 	//console.log(this.state.probDetails)
 	if(!this.state.isLoggedIn) return <Redirect to="/" />
 return (
 <div>

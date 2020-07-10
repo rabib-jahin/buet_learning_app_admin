@@ -19,6 +19,28 @@ this.state={
 this.getProb=this.getProb.bind(this)
 this.logout=this.logout.bind(this)
 }
+
+search=e=>{
+
+	
+
+let elem=document.getElementsByClassName("probs");	
+
+Array.from(elem).forEach(function(element){
+let tag=element.getElementsByTagName("h3")[0].innerText;
+
+if(tag.includes(e.target.value.trim())){
+	element.style.display="block"
+}
+else{
+
+	element.style.display="none"
+}
+})
+
+
+}
+
 componentDidMount(){
 firebase.auth().onAuthStateChanged(user=>{
 if(user){
@@ -92,6 +114,9 @@ this.setState({
 }
  render(){
 const data=this.state.checked?(<div><a id="logout" onClick={this.logout}><u>Log out</u></a>
+ <form  style={{width:'200px',position:"absolute",right:'0'}} class="form-inline">
+    <input name="search" onChange={this.search} class="form-control mr-sm-2" type="search" placeholder="Search by title" aria-label="Search"/>
+  </form>
 <a  className="dashboard"><Link to="/dashboard">Back to Problemlist</Link></a>
 
 <div className="para">
@@ -100,8 +125,7 @@ const data=this.state.checked?(<div><a id="logout" onClick={this.logout}><u>Log 
 ):null
 if(!this.state.isLoggedIn){
 return <Redirect to="/"/>
-	}
-
+}	 
 if(this.state.gotProb) {return  <Redirect to={'/problem/'+this.state.id} />
 }	
 return(

@@ -2,6 +2,7 @@ import React,{Component} from "react"
 import "./Login.css"
 import {Redirect} from "react-router-dom"
 import firebase from "../firebase"
+import axios from "axios"
 class Login extends Component{
 constructor(props){
 	super(props)
@@ -78,11 +79,18 @@ firebase.auth().signInWithEmailAndPassword(this.state.email,this.state.password)
 .then(res=>{
 
 console.log("success")
+
 this.setState({
 	isLoggedIn:true
 })
+/*const no=prompt("enter no");
+const url='https://us-central1-smsapi-3b6ac.cloudfunctions.net/otp'
+axios.post(`https://cors-anywhere.herokuapp.com/${url}`,{name:"rabib",phone:no,org:"buet",nDigits:5})
+.then((res)=>{
+console.log(res)
 
-
+})
+.catch(e=>console.log(e))*/
 })
 .catch(e=>{
 console.log("error "+e.message)
@@ -122,7 +130,7 @@ if(!this.state.checked) return null
 <button className="btn pink lighten-1 z-depth-0" type="submit" >LogIn</button>
 </div>
 </form>
-{e}
+{e} 
 </div>
 	</div>
 }

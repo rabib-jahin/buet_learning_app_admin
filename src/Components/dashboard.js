@@ -15,7 +15,8 @@ this.state={
 	probs:[],
 	gotProb:false,
 	id:"",
-	checked:false
+	checked:false,
+	
 
 }
 this.logout=this.logout.bind(this)
@@ -26,7 +27,26 @@ this.getProb=this.getProb.bind(this)
 
 
 
+search=e=>{
 
+	
+
+let elem=document.getElementsByClassName("probs");	
+
+Array.from(elem).forEach(function(element){
+let tag=element.getElementsByTagName("h3")[0].innerText;
+
+if(tag.includes(e.target.value.trim())){
+	element.style.display="block"
+}
+else{
+
+	element.style.display="none"
+}
+})
+
+
+}
 
 logout(){
 	
@@ -40,6 +60,8 @@ this.setState({
 }) 
 }
 getProb(e){
+	//let recaptcha=new firebase.auth.RecaptchaVerifier('recaptcha-container');
+
 console.log(e)
 this.setState({
 
@@ -48,8 +70,11 @@ this.setState({
 
 })
 
+
 }
 componentDidMount(){
+
+
 firebase.auth().onAuthStateChanged(user=>{
 if(user){
 
@@ -71,7 +96,7 @@ else{
 	this.componentMount()
 }
  componentMount=()=>{
- 	console.log(firebase.auth().currentUser)
+ 	console.log("onsnapshot")
 
 
 let prob=[]
@@ -102,10 +127,21 @@ this.setState({
 
 render(){
 console.log(this.state.gotProb)
-const data=this.state.checked?(<div><a id="logout" onClick={this.logout}><u>Log out</u></a>
+const data=this.state.checked?(<div>
+ <form  style={{width:'200px',position:"absolute",right:'0'}} class="form-inline">
+    <input name="search" onChange={this.search} class="form-control mr-sm-2" type="search" placeholder="Search by title" aria-label="Search"/>
+  </form>
+
+	<a id="logout" onClick={this.logout}><u>Log out</u></a>
 <br/><a ><u><Link to="/reviewed">See Reviewed Problems</Link></u></a>
+<br/><a><u><Link to="/contributors">See Contributors</Link></u></a>
 <div className="para">
-<p>Problem List</p></div></div>):null
+<p>Problem List</p></div>
+
+
+
+
+</div>):null
 
 	if(!this.state.isLoggedIn){
 return <Redirect to="/"/>
@@ -121,7 +157,7 @@ return <div className="main">
 
 
 
-this.state.probs.map((prob,i)=>{
+this.state.probs&&this.state.probs.map((prob,i)=>{
 
 var date=new Date(prob.timestamp).toDateString('en-US')
 var time=new	Date(prob.timestamp).toLocaleTimeString('en-US')
