@@ -35,8 +35,8 @@ this.state={
 	ans_type:"",
 	author:"",
 	keywords:"",
-	img:"",
-	sol_img:""
+	img:[],
+	sol_img:[]
 }
 this.change=this.change.bind(this)
 this.click=this.click.bind(this)
@@ -50,21 +50,40 @@ let files=[]
 fileupload(e,type){
 
 if(type==='des'){
+	if(this.state.img){
 this.setState({
 
 		img:[...this.state.img,URL.createObjectURL(e.target.files[0])]
-	})	}
+	})	
+}
+else{
+
+
+	this.setState({
+
+		img:[URL.createObjectURL(e.target.files[0])]
+	})
+}
+}
 
 else if(type==='ans'){
+	if(this.state.sol_img){
 this.setState({
 
 		sol_img:[...this.state.sol_img,URL.createObjectURL(e.target.files[0])]
+	})}
+else{
+this.setState({
+
+		sol_img:[URL.createObjectURL(e.target.files[0])]
 	})
 
 }
 
+}
 
 
+//console.log(URL.createObjectURL(e.target.files[0]));
 	
 
 
@@ -272,7 +291,7 @@ return (
 <div className="img-body">
 {
 	this.state.img&&this.state.img.map((img,index)=>{
-return (<div ><img src={img}/>
+return (<div key={index}><img src={img}/>
 	<button className="bt-del" onClick={(e)=>this.deleteimg(index,'des')}>Delete</button>
 </div>
 	)
@@ -337,7 +356,7 @@ return(
 <div className="img-body">
 {
 	this.state.sol_img&&this.state.sol_img.map((img,index)=>{
-return <div><img src={img}/>
+return <div key={index}><img src={img}/>
 <button className="bt-del" onClick={e=>this.deleteimg(index,'ans')}>Delete</button>
 </div>
 })
